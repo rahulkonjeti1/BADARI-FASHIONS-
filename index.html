@@ -1,20 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Badari Fashions - Online Clothing Store</title>
-
+<title>Badari Fashions</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="description" content="Badari Fashions is a stylish clothing store offering quality fashion at best prices. Shop now and order via WhatsApp.">
-
-<meta name="keywords" content="Badari Fashions, clothes shop, fashion store, online clothing, mens wear, womens wear">
-
-<meta name="author" content="Badari Fashions">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+
 body{background:#f4f4f4}
+
+/* Sections */
 .section{display:none}
 
 /* Landing */
@@ -120,7 +115,6 @@ margin-top:5px;
 
 <h2>Cart</h2>
 <div id="cartList"></div>
-<h3 id="totalPrice"></h3>
 <button onclick="sendWhatsApp()">Order via WhatsApp</button>
 
 </div>
@@ -140,7 +134,7 @@ function showShop(){showDashboard();}
 function showDashboard(){hideAll();document.getElementById("dashboard").style.display="flex";}
 function logout(){showLanding();}
 
-/* Login */
+/* Login Validation */
 function login(){
 let user=document.getElementById("username").value;
 let pass=document.getElementById("password").value;
@@ -152,7 +146,7 @@ document.getElementById("loginError").innerText="Invalid Credentials!";
 }
 }
 
-/* Products */
+/* Product Management */
 let products=[];
 let cart=[];
 
@@ -163,9 +157,6 @@ let price=document.getElementById("pprice").value;
 if(name && price){
 products.push({name,price});
 displayProducts();
-
-document.getElementById("pname").value="";
-document.getElementById("pprice").value="";
 }
 }
 
@@ -190,16 +181,13 @@ displayCart();
 
 function displayCart(){
 let list=document.getElementById("cartList");
-let total=0;
 list.innerHTML="";
 cart.forEach(p=>{
-total+=Number(p.price);
 list.innerHTML+=`<div class="product">${p.name} - ₹${p.price}</div>`;
 });
-document.getElementById("totalPrice").innerText="Total: ₹"+total;
 }
 
-/* WhatsApp */
+/* WhatsApp Order */
 function sendWhatsApp(){
 let message="Hello Badari Fashions,%0AI want to order:%0A";
 cart.forEach(p=>{
@@ -209,7 +197,6 @@ window.open(`https://wa.me/918179564372?text=${message}`);
 }
 
 showLanding();
-
 </script>
 
 </body>
