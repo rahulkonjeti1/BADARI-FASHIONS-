@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Badari Fashions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+
+body{background:#f4f4f4}
+
+/* Sections */
+.section{display:none}
+
+/* Landing */
+#landing{
+height:100vh;
+background:linear-gradient(135deg,#141e30,#243b55);
+color:white;text-align:center;
+}
+nav{
+display:flex;justify-content:space-between;
+padding:20px 50px;
+}
+nav button{
+background:#ff4d4d;border:none;color:white;
+padding:8px 20px;border-radius:20px;cursor:pointer;
+}
+.hero{margin-top:120px}
+.hero h2{font-size:40px;margin-bottom:20px}
+
+/* Login */
+#login{
+height:100vh;display:flex;
+justify-content:center;align-items:center;
+background:linear-gradient(135deg,#ff4d4d,#800000);
+}
+.login-box{
+background:white;padding:40px;
+border-radius:10px;width:300px;text-align:center;
+}
+.login-box input{
+width:100%;padding:10px;margin:10px 0;
+border-radius:5px;border:1px solid #ccc;
+}
+.login-box button{
+width:100%;padding:10px;
+background:#ff4d4d;border:none;
+color:white;border-radius:5px;cursor:pointer;
+}
+
+/* Dashboard */
+#dashboard{display:flex;height:100vh}
+.sidebar{
+width:200px;background:#111;color:white;padding:20px;
+}
+.sidebar a{display:block;margin:15px 0;cursor:pointer}
+.content{flex:1;padding:20px;overflow:auto}
+
+/* Products */
+.product{
+background:white;padding:15px;margin:10px;
+border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.1);
+}
+button{
+background:#ff4d4d;color:white;border:none;
+padding:6px 12px;border-radius:5px;cursor:pointer;
+margin-top:5px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LANDING -->
+<div id="landing" class="section">
+<nav>
+<h2>BADARI FASHIONS</h2>
+<button onclick="showLogin()">Login</button>
+</nav>
+<div class="hero">
+<h2>Premium Fashion Collection</h2>
+<button onclick="showShop()">Shop Now</button>
+</div>
+</div>
+
+<!-- LOGIN -->
+<div id="login" class="section">
+<div class="login-box">
+<h3>Admin Login</h3>
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<p id="loginError" style="color:red"></p>
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="section">
+<div class="sidebar">
+<h3>Admin Panel</h3>
+<a onclick="showProducts()">Products</a>
+<a onclick="showCart()">Cart</a>
+<a onclick="logout()">Logout</a>
+</div>
+
+<div class="content">
+<h2>Product Management</h2>
+
+<input type="text" id="pname" placeholder="Product Name">
+<input type="number" id="pprice" placeholder="Price">
+<button onclick="addProduct()">Add Product</button>
+
+<div id="productList"></div>
+
+<h2>Cart</h2>
+<div id="cartList"></div>
+<button onclick="sendWhatsApp()">Order via WhatsApp</button>
+
+</div>
+</div>
+
+<script>
+
+/* Navigation */
+function hideAll(){
+document.getElementById("landing").style.display="none";
+document.getElementById("login").style.display="none";
+document.getElementById("dashboard").style.display="none";
+}
+function showLanding(){hideAll();document.getElementById("landing").style.display="block";}
+function showLogin(){hideAll();document.getElementById("login").style.display="flex";}
+function showShop(){showDashboard();}
+function showDashboard(){hideAll();document.getElementById("dashboard").style.display="flex";}
+function logout(){showLanding();}
+
+/* Login Validation */
+function login(){
+let user=document.getElementById("username").value;
+let pass=document.getElementById("password").value;
+
+if(user==="admin" && pass==="1234"){
+showDashboard();
+}else{
+document.getElementById("loginError").innerText="Invalid Credentials!";
+}
+}
+
+/* Product Management */
+let products=[];
+let cart=[];
+
+function addProduct(){
+let name=document.getElementById("pname").value;
+let price=document.getElementById("pprice").value;
+
+if(name && price){
+products.push({name,price});
+displayProducts();
+}
+}
+
+function displayProducts(){
+let list=document.getElementById("productList");
+list.innerHTML="";
+products.forEach((p,i)=>{
+list.innerHTML+=`
+<div class="product">
+<b>${p.name}</b><br>
+₹${p.price}<br>
+<button onclick="addToCart(${i})">Add to Cart</button>
+</div>`;
+});
+}
+
+/* Cart */
+function addToCart(i){
+cart.push(products[i]);
+displayCart();
+}
+
+function displayCart(){
+let list=document.getElementById("cartList");
+list.innerHTML="";
+cart.forEach(p=>{
+list.innerHTML+=`<div class="product">${p.name} - ₹${p.price}</div>`;
+});
+}
+
+/* WhatsApp Order */
+function sendWhatsApp(){
+let message="Hello Badari Fashions,%0AI want to order:%0A";
+cart.forEach(p=>{
+message+=`${p.name} - ₹${p.price}%0A`;
+});
+window.open(`https://wa.me/919876543210?text=${message}`);
+}
+
+showLanding();
+</script>
+
+</body>
+</html>
