@@ -73,7 +73,7 @@
                 <h1 class="text-2xl font-bold tracking-wider brand-font">BADARI FASHIONS</h1>
             </div>
             <button onclick="showLogin()" class="bg-transparent border-2 border-secondary text-secondary hover:bg-secondary hover:text-dark px-6 py-2 rounded-full font-medium transition duration-300">
-                Admin Login
+                Login / Register
             </button>
         </nav>
 
@@ -85,7 +85,7 @@
             <p class="text-gray-200 mb-10 max-w-lg text-lg">
                 Explore our premium collection of meticulously crafted fashion designed to make you stand out.
             </p>
-            <button onclick="showDashboardAndTab('shop')" class="bg-primary hover:bg-red-900 text-white px-10 py-4 rounded-full text-lg font-medium shadow-[0_0_15px_rgba(128,0,0,0.5)] transition duration-300 transform hover:-translate-y-1 flex items-center gap-3">
+            <button onclick="showLogin()" class="bg-primary hover:bg-red-900 text-white px-10 py-4 rounded-full text-lg font-medium shadow-[0_0_15px_rgba(128,0,0,0.5)] transition duration-300 transform hover:-translate-y-1 flex items-center gap-3">
                 <i class="fa-solid fa-shopping-bag"></i> Shop Collection
             </button>
         </div>
@@ -93,37 +93,72 @@
 
     <div id="login" class="section min-h-screen flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1445205170230-053b83016050?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')] bg-cover bg-center">
         <div class="absolute inset-0 bg-black bg-opacity-60"></div>
-        <div class="glass relative z-10 w-full max-w-md p-10 rounded-2xl">
-            <div class="text-center mb-8">
+        
+        <div class="glass relative z-10 w-full max-w-md p-8 rounded-2xl">
+            <div class="text-center mb-6">
                 <i class="fa-solid fa-user-shield text-primary text-4xl mb-3"></i>
                 <h3 class="text-3xl font-bold brand-font text-dark">Welcome Back</h3>
-                <p class="text-gray-500 text-sm mt-1">Sign in to manage your store</p>
+                <p class="text-gray-500 text-sm mt-1">Sign in to access your dashboard</p>
+            </div>
+
+            <div class="flex border-b mb-6">
+                <button id="tabPhone" onclick="toggleLoginForm('phone')" class="flex-1 py-2 font-semibold text-primary border-b-2 border-primary transition">Phone (OTP)</button>
+                <button id="tabEmail" onclick="toggleLoginForm('email')" class="flex-1 py-2 font-semibold text-gray-400 border-b-2 border-transparent transition">Email</button>
             </div>
             
-            <div class="space-y-5">
+            <div id="formPhone" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
                     <div class="relative">
-                        <i class="fa-solid fa-user absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="text" id="username" placeholder="Enter admin" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition">
+                        <i class="fa-solid fa-phone absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="text" id="phone" placeholder="+91XXXXXXXXXX" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition">
+                    </div>
+                </div>
+
+                <div id="recaptcha-container" class="flex justify-center mt-2"></div>
+                
+                <button id="btnSendOTP" onclick="window.sendOTP()" class="w-full bg-primary hover:bg-red-900 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-lg">
+                    Send OTP
+                </button>
+
+                <div id="otpSection" class="hidden space-y-4 mt-4 border-t pt-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Enter OTP</label>
+                        <div class="relative">
+                            <i class="fa-solid fa-key absolute left-4 top-3.5 text-gray-400"></i>
+                            <input type="text" id="otp" placeholder="123456" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition">
+                        </div>
+                    </div>
+                    <button onclick="window.verifyOTP()" class="w-full bg-secondary hover:bg-yellow-600 text-dark font-bold py-3 rounded-lg transition duration-300 shadow-lg">
+                        Verify & Login
+                    </button>
+                </div>
+            </div>
+
+            <div id="formEmail" class="hidden space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-400"></i>
+                        <input type="email" id="email" placeholder="admin@badarifashions.com" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition">
                     </div>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                     <div class="relative">
                         <i class="fa-solid fa-lock absolute left-4 top-3.5 text-gray-400"></i>
-                        <input type="password" id="password" placeholder="Enter 1234" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition">
+                        <input type="password" id="password" placeholder="••••••••" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition">
                     </div>
                 </div>
-                
-                <p id="loginError" class="text-red-500 text-sm font-medium text-center h-4"></p>
-                
-                <button onclick="login()" class="w-full bg-primary hover:bg-red-900 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-lg">
-                    Login to Dashboard
+                <button onclick="window.emailLogin()" class="w-full bg-primary hover:bg-red-900 text-white font-semibold py-3 rounded-lg transition duration-300 shadow-lg">
+                    Login
                 </button>
-                <div class="text-center mt-4">
-                    <button onclick="showLanding()" class="text-sm text-gray-500 hover:text-primary transition"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
-                </div>
+            </div>
+            
+            <p id="loginError" class="text-red-500 text-sm font-medium text-center mt-4 h-4"></p>
+            
+            <div class="text-center mt-6">
+                <button onclick="showLanding()" class="text-sm text-gray-500 hover:text-primary transition"><i class="fa-solid fa-arrow-left"></i> Back to Home</button>
             </div>
         </div>
     </div>
@@ -175,7 +210,7 @@
                 <div id="productList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     <div class="col-span-full text-center py-20 text-gray-400 border-2 border-dashed border-gray-300 rounded-xl">
                         <i class="fa-solid fa-box-open text-4xl mb-3"></i>
-                        <p>No products available yet. Admin needs to add some!</p>
+                        <p>No products available yet. Check the Admin Panel to add some!</p>
                     </div>
                 </div>
             </div>
@@ -232,7 +267,7 @@
     </div>
 
     <script>
-        /* Variables */
+        /* UI State Variables */
         let products = [];
         let cart = [];
 
@@ -245,29 +280,49 @@
         function showLanding(){ hideAll(); document.getElementById("landing").style.display="flex"; }
         function showLogin(){ hideAll(); document.getElementById("login").style.display="flex"; }
         
-        // Helper to go straight to dashboard and specific tab
-        function showDashboardAndTab(tabName) {
+        // This function is called by Firebase upon successful login
+        function enterDashboard() {
             hideAll();
             document.getElementById("dashboard").style.display="flex";
-            switchTab(tabName);
+            switchTab('shop');
         }
 
         function logout(){ 
-            // Clear inputs and error messages
-            document.getElementById("username").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("otp").value = "";
+            document.getElementById("email").value = "";
             document.getElementById("password").value = "";
             document.getElementById("loginError").innerText = "";
             showLanding(); 
         }
 
+        // Login Form Tabs Toggle
+        function toggleLoginForm(type) {
+            document.getElementById("loginError").innerText = "";
+            
+            const btnPhone = document.getElementById("tabPhone");
+            const btnEmail = document.getElementById("tabEmail");
+            
+            if (type === 'phone') {
+                document.getElementById("formPhone").classList.remove("hidden");
+                document.getElementById("formEmail").classList.add("hidden");
+                
+                btnPhone.className = "flex-1 py-2 font-semibold text-primary border-b-2 border-primary transition";
+                btnEmail.className = "flex-1 py-2 font-semibold text-gray-400 border-b-2 border-transparent transition";
+            } else {
+                document.getElementById("formPhone").classList.add("hidden");
+                document.getElementById("formEmail").classList.remove("hidden");
+                
+                btnEmail.className = "flex-1 py-2 font-semibold text-primary border-b-2 border-primary transition";
+                btnPhone.className = "flex-1 py-2 font-semibold text-gray-400 border-b-2 border-transparent transition";
+            }
+        }
+
         /* Dashboard Internal Tab Switching */
         function switchTab(tabName) {
-            // Hide all views
             document.querySelectorAll('.dashboard-view').forEach(v => v.style.display = 'none');
-            // Show target view
             document.getElementById('view-' + tabName).style.display = 'block';
             
-            // Update active styles on sidebar
             document.querySelectorAll('.dash-tab').forEach(btn => {
                 btn.classList.remove('bg-primary', 'text-white');
                 btn.classList.add('text-gray-300');
@@ -275,18 +330,6 @@
             let activeBtn = document.getElementById('tab-' + tabName);
             activeBtn.classList.remove('text-gray-300');
             activeBtn.classList.add('bg-primary', 'text-white');
-        }
-
-        /* Login Validation */
-        function login(){
-            let user = document.getElementById("username").value;
-            let pass = document.getElementById("password").value;
-
-            if(user === "admin" && pass === "1234"){
-                showDashboardAndTab('admin'); // Admins usually want to see the management tab first
-            } else {
-                document.getElementById("loginError").innerText="Invalid Credentials! Use admin / 1234";
-            }
         }
 
         /* Product Management */
@@ -298,12 +341,10 @@
                 products.push({name, price});
                 displayProducts();
                 
-                // Show success message briefly
                 let successMsg = document.getElementById("addSuccess");
                 successMsg.style.display = "block";
                 setTimeout(() => { successMsg.style.display = "none"; }, 3000);
 
-                // Clear fields
                 document.getElementById("pname").value = "";
                 document.getElementById("pprice").value = "";
             } else {
@@ -348,8 +389,6 @@
             cart.push(products[i]);
             updateCartBadge();
             displayCart();
-            
-            // Optional: Show a small alert or animation here
             alert(`"${products[i].name}" added to cart!`);
         }
 
@@ -391,7 +430,6 @@
                     <span class="font-bold text-gray-700">₹${p.price}</span>
                 </div>`;
             });
-            
             totalEl.innerText = `₹${total}`;
         }
 
@@ -418,17 +456,118 @@
             
             message += `%0A*Total Amount: ₹${total}*%0A%0APlease confirm my order.`;
             
-            // Opens WhatsApp link with predefined message to the specified number
+            // Replaced with the WhatsApp number from your specific requirements
             window.open(`https://wa.me/918179564372?text=${message}`, '_blank');
-            
-            // Optional: Clear cart after order
-            // cart = [];
-            // updateCartBadge();
-            // displayCart();
         }
+
+        // Make enterDashboard available to the Firebase module
+        window.enterDashboard = enterDashboard;
 
         // Initialize App
         showLanding();
     </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-analytics.js";
+        import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBoOLxnxI2yf7d6EuIjSvosngbAVhLo2gk",
+            authDomain: "badari-fashions-50ad6.firebaseapp.com",
+            projectId: "badari-fashions-50ad6",
+            storageBucket: "badari-fashions-50ad6.firebasestorage.app",
+            messagingSenderId: "744767739020",
+            appId: "1:744767739020:web:759bf2c0ad92f14ac017a9",
+            measurementId: "G-9BV4MFN126"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+
+        // Setup reCAPTCHA (Triggers only when needed)
+        function setupRecaptcha() {
+            if (!window.recaptchaVerifier) {
+                window.recaptchaVerifier = new RecaptchaVerifier(auth, "recaptcha-container", {
+                    size: "normal",
+                    callback: (response) => {
+                        // reCAPTCHA solved
+                    }
+                });
+            }
+        }
+
+        // Global function for Phone Login / Send OTP
+        window.sendOTP = function () {
+            setupRecaptcha();
+            const phoneNumber = document.getElementById("phone").value;
+            const errorEl = document.getElementById("loginError");
+            errorEl.innerText = "";
+
+            if(!phoneNumber.startsWith("+")) {
+                errorEl.innerText = "Error: Please include country code (e.g. +91)";
+                return;
+            }
+
+            signInWithPhoneNumber(auth, phoneNumber, window.recaptchaVerifier)
+                .then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                    // Show OTP input section, hide Send button
+                    document.getElementById("btnSendOTP").classList.add("hidden");
+                    document.getElementById("otpSection").classList.remove("hidden");
+                    document.getElementById("recaptcha-container").classList.add("hidden"); // hide recaptcha after success
+                    alert("OTP sent successfully via SMS!");
+                })
+                .catch((error) => {
+                    errorEl.innerText = "Error sending OTP: " + error.message;
+                });
+        };
+
+        // Global function for Verifying OTP
+        window.verifyOTP = function () {
+            const otp = document.getElementById("otp").value;
+            const errorEl = document.getElementById("loginError");
+            errorEl.innerText = "";
+
+            if(otp === "") {
+                errorEl.innerText = "Please enter the OTP.";
+                return;
+            }
+
+            window.confirmationResult.confirm(otp)
+                .then((result) => {
+                    alert("Login successful!");
+                    window.enterDashboard(); // Switches to Dashboard view
+                })
+                .catch((error) => {
+                    errorEl.innerText = "Invalid OTP. Please try again.";
+                });
+        };
+
+        // Global function for Email Login
+        window.emailLogin = function () {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const errorEl = document.getElementById("loginError");
+            errorEl.innerText = "";
+
+            if (!email || !password) {
+                errorEl.innerText = "Please enter both Email and Password.";
+                return;
+            }
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    alert("Email login successful!");
+                    window.enterDashboard(); // Switches to Dashboard view
+                })
+                .catch((error) => {
+                    errorEl.innerText = "Login Failed: " + error.message;
+                });
+        };
+    </script>
 </body>
 </html>
+
